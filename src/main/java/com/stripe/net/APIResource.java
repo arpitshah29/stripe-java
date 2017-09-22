@@ -34,11 +34,12 @@ import com.stripe.model.HasId;
 import com.stripe.model.OrderItem;
 import com.stripe.model.OrderItemDeserializer;
 import com.stripe.model.Source;
-import com.stripe.model.SourceDeserializer;
+import com.stripe.model.SourceTransaction;
 import com.stripe.model.StripeCollectionInterface;
 import com.stripe.model.StripeObject;
 import com.stripe.model.StripeRawJsonObject;
 import com.stripe.model.StripeRawJsonObjectDeserializer;
+import com.stripe.model.TypeDataDeserializer;
 
 public abstract class APIResource extends StripeObject {
 	private static StripeResponseGetter stripeResponseGetter = new LiveStripeResponseGetter();
@@ -56,7 +57,8 @@ public abstract class APIResource extends StripeObject {
 			.registerTypeAdapter(StripeRawJsonObject.class, new StripeRawJsonObjectDeserializer())
 			.registerTypeAdapter(BalanceTransaction.class, new BalanceTransactionDeserializer())
 			.registerTypeAdapter(Dispute.class, new DisputeDataDeserializer())
-			.registerTypeAdapter(Source.class, new SourceDeserializer())
+			.registerTypeAdapter(Source.class, new TypeDataDeserializer<Source>())
+			.registerTypeAdapter(SourceTransaction.class, new TypeDataDeserializer<SourceTransaction>())
 			.registerTypeAdapter(OrderItem.class, new OrderItemDeserializer())
 			.registerTypeAdapter(ExpandableField.class, new ExpandableFieldDeserializer())
 			.registerTypeAdapter(EphemeralKey.class, new EphemeralKeyDeserializer())
@@ -86,6 +88,8 @@ public abstract class APIResource extends StripeObject {
 			return "subscription_item";
 		} else if (className.equals("ephemeralkey")) {
 			return "ephemeral_key";
+		} else if (className.equals("sourcetransaction")) {
+			return "source_transaction";
 		} else {
 			return className;
 		}

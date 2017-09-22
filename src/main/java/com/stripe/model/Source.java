@@ -10,7 +10,7 @@ import com.stripe.net.RequestOptions;
 import java.io.IOException;
 import java.util.Map;
 
-public class Source extends ExternalAccount {
+public class Source extends ExternalAccount implements HasTypeData {
 	Long amount;
 	String clientSecret;
 	Long created;
@@ -207,5 +207,19 @@ public class Source extends ExternalAccount {
 			throws AuthenticationException, InvalidRequestException,
 			APIConnectionException, CardException, APIException {
 		return request(RequestMethod.POST, this.getSourceInstanceURL(), params, Source.class, options);
+	}
+
+	public SourceTransactionCollection sourceTransactions(Map<String, Object> params)
+			throws AuthenticationException, InvalidRequestException,
+			APIConnectionException, CardException, APIException {
+		return sourceTransactions(params, null);
+	}
+
+	public SourceTransactionCollection sourceTransactions(Map<String, Object> params,
+									 							 RequestOptions options)
+			throws AuthenticationException, InvalidRequestException,
+			APIConnectionException, CardException, APIException {
+		String url = instanceURL(Source.class, this.getId()) + "/source_transactions";
+		return requestCollection(url, params, SourceTransactionCollection.class, options);
 	}
 }
